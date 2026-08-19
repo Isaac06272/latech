@@ -29,6 +29,23 @@ function getSupabaseAdmin() {
   return supabaseAdmin;
 }
 
+export async function GET() {
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data, error } = await supabase
+      .from('digests')
+      .select('*')
+      .order('date', { ascending: false })
+      .order('type', { ascending: true });
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, data }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
     // 1. Validate the secret header
