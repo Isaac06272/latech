@@ -1,11 +1,52 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 export default function HeroSection() {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+
+  useEffect(() => {
+    // Calculate time until next Monday 10 AM Philippine Time (UTC+8)
+    const calculateTimeLeft = () => {
+      const now = new Date()
+      // Get current time in Philippine Time (UTC+8)
+      const phTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Manila' }))
+
+      // Find next Monday 10 AM
+      const nextMonday = new Date(phTime)
+      const dayOfWeek = phTime.getDay() // 0 = Sunday, 1 = Monday, etc.
+      const daysUntilMonday = (dayOfWeek === 1 && phTime.getHours() < 10) ? 0 : (8 - dayOfWeek) % 7 || 7
+      nextMonday.setDate(phTime.getDate() + daysUntilMonday)
+      nextMonday.setHours(10, 0, 0, 0)
+
+      const diff = nextMonday.getTime() - phTime.getTime()
+
+      if (diff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+      }
+
+      return {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      }
+    }
+
+    const updateTimeLeft = () => {
+      setTimeLeft(calculateTimeLeft())
+    }
+
+    updateTimeLeft()
+    const interval = setInterval(updateTimeLeft, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   const countdown = [
-    { value: '03', label: 'Days' },
-    { value: '14', label: 'Hours' },
-    { value: '22', label: 'Mins' },
-    { value: '45', label: 'Secs' },
+    { value: String(timeLeft.days).padStart(2, '0'), label: 'Days' },
+    { value: String(timeLeft.hours).padStart(2, '0'), label: 'Hours' },
+    { value: String(timeLeft.minutes).padStart(2, '0'), label: 'Mins' },
+    { value: String(timeLeft.seconds).padStart(2, '0'), label: 'Secs' },
   ]
 
   return (
@@ -14,7 +55,7 @@ export default function HeroSection() {
         <span className="material-symbols-outlined text-4xl text-yellow-500 rotate-12" style={{ fontVariationSettings: "'FILL' 1" }}>
           push_pin
         </span>
-        Good morning, Alex! <span className="inline-block animate-bounce">👋</span>
+        Good morning, Isaac! <span className="inline-block animate-bounce">👋</span>
       </h1>
       <p className="font-headline-md text-body-lg text-on-surface-variant ml-12">
         Here is your intelligence digest for the week of October 23rd.

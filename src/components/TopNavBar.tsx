@@ -12,7 +12,7 @@ export default function TopNavBar() {
   const pathname = usePathname()
 
   return (
-    <nav className="w-full top-0 sticky z-50 bg-surface/90 backdrop-blur-md shadow-cloud flex justify-between items-center px-container-padding py-4 max-w-7xl mx-auto">
+    <nav className="w-full top-0 sticky z-50 bg-surface/90 backdrop-blur-md shadow-cloud flex justify-between items-center px-container-padding py-4">
       <div className="flex items-center gap-4">
         <img
           alt="LaTech Logo"
