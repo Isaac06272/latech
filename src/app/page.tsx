@@ -30,8 +30,11 @@ export default function DashboardPage() {
         if (!json.success) throw new Error(json.error || 'Failed to fetch')
 
         const allDigests: DigestItem[] = json.data || []
-        setAiDigests(allDigests.filter(d => d.type === 'ai'))
-        setRepoDigests(allDigests.filter(d => d.type === 'repo'))
+        // Map types: 'ai', 'technology' -> AI column | 'repo', 'github' -> Repo column
+        const aiTypes = ['ai', 'technology']
+        const repoTypes = ['repo', 'github']
+        setAiDigests(allDigests.filter(d => aiTypes.includes(d.type)))
+        setRepoDigests(allDigests.filter(d => repoTypes.includes(d.type)))
       } catch (err: any) {
         setError(err.message)
       } finally {

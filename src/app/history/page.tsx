@@ -223,7 +223,7 @@ export default function HistoryPage() {
                   <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-2 font-handwritten text-lg uppercase tracking-wider">
                     Top Summary
                   </h3>
-                  {week.digests.filter(d => d.type === 'ai').map((digest, i) => (
+                  {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).map((digest, i) => (
                     <div key={digest.id || i} className="mb-4">
                       <p className="text-on-surface mb-2">{digest.content}</p>
                       {digest.notion_page_id && (
@@ -233,7 +233,7 @@ export default function HistoryPage() {
                       )}
                     </div>
                   ))}
-                  {week.digests.filter(d => d.type === 'ai').length === 0 && (
+                  {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No AI insights this week... 🤖
                     </p>
@@ -245,13 +245,13 @@ export default function HistoryPage() {
                   <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-2 font-handwritten text-lg uppercase tracking-wider">
                     Trending Repos
                   </h3>
-                  {week.digests.filter(d => d.type === 'repo').map((digest, i) => (
+                  {week.digests.filter(d => ['repo', 'github'].includes(d.type)).map((digest, i) => (
                     <div key={digest.id || i} className="mb-3 flex items-center gap-2 text-primary hover:text-surface-tint cursor-pointer transition-colors">
                       <span className="material-symbols-outlined text-sm">star</span>
                       <span className="font-medium underline-wavy decoration-primary-fixed">{digest.title}</span>
                     </div>
                   ))}
-                  {week.digests.filter(d => d.type === 'repo').length === 0 && (
+                  {week.digests.filter(d => ['repo', 'github'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No trending repos this week... 📦
                     </p>
