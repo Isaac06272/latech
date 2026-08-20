@@ -58,6 +58,15 @@ export async function POST(request: Request) {
 
     // 2. Parse the payload
     const body = await request.json();
+    console.log('Digest payload received', {
+      type: body.type,
+      date: body.date,
+      title: body.title,
+      hasContent: !!body.content,
+      notionPageId: body.notionPageId,
+      hasSourceData: !!body.sourceData,
+    });
+
     const { type, date, title, content, notionPageId, sourceData } = body;
 
     if (!type || !date || !title || !content) {
@@ -65,6 +74,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Upsert into Supabase
+    console.log('Upserting to Supabase...');
     const supabase = getSupabaseAdmin();
     const { data, error } = await supabase
       .from('digests')
@@ -83,6 +93,7 @@ export async function POST(request: Request) {
       .select()
       .single<DigestRow>();
 
+    console.log('Supabase response', { hasData: !!data, error: error?.message });
     if (error) throw error;
 
     return NextResponse.json(
