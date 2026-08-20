@@ -13,18 +13,34 @@ export default function HeroSection() {
       // Get current time in Philippine Time (UTC+8)
       const phTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Manila' }))
 
-      // Find next Monday 10 AM
-      const nextMonday = new Date(phTime)
+      // Find the CURRENT week's Monday (the Monday whose data is displayed)
+      const currentMonday = new Date(phTime)
       const dayOfWeek = phTime.getDay() // 0 = Sunday, 1 = Monday, etc.
-      const daysUntilMonday = (dayOfWeek === 1 && phTime.getHours() < 10) ? 0 : (8 - dayOfWeek) % 7 || 7
-      nextMonday.setDate(phTime.getDate() + daysUntilMonday)
-      nextMonday.setHours(10, 0, 0, 0)
+      let daysSinceMonday: number
+
+      if (dayOfWeek === 1) {
+        // Monday: check if after 10 AM (data refreshed) or before 10 AM (still last week's data)
+        daysSinceMonday = phTime.getHours() >= 10 ? 0 : 7
+      } else if (dayOfWeek === 0) {
+        // Sunday -> last Monday was 6 days ago
+        daysSinceMonday = 6
+      } else {
+        // Tue=1, Wed=2, Thu=3, Fri=4, Sat=5 days since Monday
+        daysSinceMonday = dayOfWeek - 1
+      }
+
+      currentMonday.setDate(phTime.getDate() - daysSinceMonday)
+      currentMonday.setHours(10, 0, 0, 0)
+
+      // Format the current week's Monday for display (e.g., "August 17")
+      const weekLabel = currentMonday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+      setRefreshWeek(weekLabel)
+
+      // Find NEXT Monday 10 AM for countdown (always +7 days from current week's Monday)
+      const nextMonday = new Date(currentMonday)
+      nextMonday.setDate(currentMonday.getDate() + 7)
 
       const diff = nextMonday.getTime() - phTime.getTime()
-
-      // Format the Monday date for display (e.g., "January 15")
-      const weekLabel = nextMonday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
-      setRefreshWeek(weekLabel)
 
       if (diff <= 0) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 }
