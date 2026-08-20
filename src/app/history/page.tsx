@@ -287,8 +287,8 @@ export default function HistoryPage() {
                           href={sourceUrl || '#'}
                           target="_blank"
                           rel="noopener noreferrer"
-                        className="block mb-3 text-on-surface hover:text-tertiary transition-colors group flex items-center gap-2"
-                      >
+                          className="block mb-3 text-on-surface hover:text-tertiary transition-colors group flex items-center gap-2"
+                        >
                         <span className="material-symbols-outlined text-tertiary text-sm">star</span>
                         <span className="font-medium underline decoration-dashed decoration-tertiary/50 underline-offset-2">
                           {digest.title}
