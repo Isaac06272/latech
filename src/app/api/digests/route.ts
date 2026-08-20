@@ -73,8 +73,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Invalid digest payload' }, { status: 400 });
     }
 
-    // 3. Upsert into Supabase
-    console.log('Upserting to Supabase...');
+    // 3. Insert into Supabase (allows multiple cards per type/date)
+    console.log('Inserting to Supabase...');
     const supabase = getSupabaseAdmin();
     const { data, error } = await supabase
       .from('digests')
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
           source_data: sourceData,
           updated_at: new Date().toISOString(),
         },
-        { onConflict: 'type,date' } // Uses the unique constraint
+        { onConflict: 'type,date,title' } // New unique constraint
       )
       .select()
       .single<DigestRow>();
