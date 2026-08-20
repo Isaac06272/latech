@@ -126,7 +126,7 @@ export default function HistoryPage() {
 
   if (loading) {
     return (
-      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-[31px]">
+      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-0">
         <TopNavBar />
         <main className="max-w-4xl mx-auto px-container-padding py-section-gap ml-[40px] md:ml-auto flex-grow">
           <header className="mb-12 relative">
@@ -170,7 +170,7 @@ export default function HistoryPage() {
 
   if (error) {
     return (
-      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-[31px]">
+      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-0">
         <TopNavBar />
         <main className="max-w-4xl mx-auto px-container-padding py-section-gap ml-[40px] md:ml-auto flex-grow">
           <header className="mb-12 relative">
@@ -191,7 +191,7 @@ export default function HistoryPage() {
 
   if (weeks.length === 0) {
     return (
-      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-[31px]">
+      <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-0">
         <TopNavBar />
         <main className="max-w-4xl mx-auto px-container-padding py-section-gap ml-[40px] md:ml-auto flex-grow">
           <header className="mb-12 relative">
@@ -211,7 +211,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-[31px]">
+    <div className="ruled-bg text-on-background font-body-md min-h-screen flex flex-col pt-0">
       <TopNavBar />
 
       {/* Main Content */}

@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-[31px]">
+      <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-0">
         <TopNavBar />
         <main className="flex-grow max-w-7xl mx-auto w-full px-container-padding py-section-gap flex flex-col gap-section-gap z-10 relative">
           <HeroSection />
@@ -122,7 +122,7 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-[31px]">
+      <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-0">
         <TopNavBar />
         <main className="flex-grow max-w-7xl mx-auto w-full px-container-padding py-section-gap flex flex-col gap-section-gap z-10 relative">
           <HeroSection />
@@ -136,7 +136,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-[31px]">
+    <div className="ruled-bg text-on-background font-headline-md text-body-md antialiased min-h-screen flex flex-col pt-0">
       <TopNavBar />
       <main className="flex-grow max-w-7xl mx-auto w-full px-container-padding py-section-gap flex flex-col gap-section-gap z-10 relative">
         <HeroSection />
