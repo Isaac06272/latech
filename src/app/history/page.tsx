@@ -5,28 +5,28 @@ import TopNavBar from '@/components/TopNavBar'
 import Link from 'next/link'
 
 interface DigestItem {
-  id: string;
-  type: string;
-  date: string;
-  title: string;
-  content: string;
-  notion_page_id: string | null;
+  id: string
+  type: string
+  date: string
+  title: string
+  content: string
+  notion_page_id: string | null
   source_data: {
-    url?: string;
-    html_url?: string;
-    link?: string;
-    source_url?: string;
-    [key: string]: unknown;
-  } | null;
-  updated_at: string;
+    url?: string
+    html_url?: string
+    link?: string
+    source_url?: string
+    [key: string]: unknown
+  } | null
+  updated_at: string
 }
 
 interface WeekData {
-  weekLabel: string;
-  date: Date;
-  digests: DigestItem[];
-  illegible?: boolean;
-  tapeStyle?: string;
+  weekLabel: string
+  date: Date
+  digests: DigestItem[]
+  illegible?: boolean
+  tapeStyle?: string
 }
 
 // Helper to parse inline style string to CSSProperties
@@ -137,7 +137,7 @@ export default function HistoryPage() {
             </p>
           </header>
           <div className="space-y-12">
-            {[1,2,3].map(i => (
+            {[1, 2, 3].map(i => (
               <section key={i} className="relative bg-white/60 p-8 hand-drawn-border backdrop-blur-sm animate-pulse">
                 <div className="tape"></div>
                 <div className="flex items-center gap-3 mb-6">
@@ -289,12 +289,13 @@ export default function HistoryPage() {
                           rel="noopener noreferrer"
                           className="block mb-3 text-on-surface hover:text-tertiary transition-colors group flex items-center gap-2"
                         >
-                        <span className="material-symbols-outlined text-tertiary text-sm">star</span>
-                        <span className="font-medium underline decoration-dashed decoration-tertiary/50 underline-offset-2">
-                          {digest.title}
-                        </span>
-                      </a>
-                    ))}
+                          <span className="material-symbols-outlined text-tertiary text-sm">star</span>
+                          <span className="font-medium underline decoration-dashed decoration-tertiary/50 underline-offset-2">
+                            {digest.title}
+                          </span>
+                        </a>
+                      )
+                    })}
                   {week.digests.filter(d => ['repo', 'github'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No trending repos this week... 📦
