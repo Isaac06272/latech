@@ -231,16 +231,23 @@ export default function HistoryPage() {
                   <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-2 font-handwritten text-lg uppercase tracking-wider">
                     Top Summary
                   </h3>
-                  {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).map((digest, i) => (
-                    <div key={digest.id || i} className="mb-4">
-                      <p className="text-on-surface mb-2">{getSummary(digest.content)}</p>
-                      {digest.notion_page_id && (
-                        <a href={`https://notion.so/${digest.notion_page_id}`} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-surface-tint text-sm">
-                          View in Notion →
-                        </a>
-                      )}
-                    </div>
-                  ))}
+                  {week.digests
+                    .filter(d => ['ai', 'technology'].includes(d.type))
+                    .slice(0, 5)
+                    .map((digest, i) => (
+                      <a
+                        key={digest.id || i}
+                        href={digest.notion_page_id ? `https://notion.so/${digest.notion_page_id}` : '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block mb-3 text-on-surface hover:text-primary transition-colors group flex items-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-primary text-sm">article</span>
+                        <span className="font-medium underline decoration-wavy decoration-primary/50 underline-offset-2">
+                          {digest.title}
+                        </span>
+                      </a>
+                    ))}
                   {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No AI insights this week... 🤖
@@ -253,12 +260,23 @@ export default function HistoryPage() {
                   <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-2 font-handwritten text-lg uppercase tracking-wider">
                     Trending Repos
                   </h3>
-                  {week.digests.filter(d => ['repo', 'github'].includes(d.type)).map((digest, i) => (
-                    <div key={digest.id || i} className="mb-3 flex items-center gap-2 text-primary hover:text-surface-tint cursor-pointer transition-colors">
-                      <span className="material-symbols-outlined text-sm">star</span>
-                      <span className="font-medium underline-wavy decoration-primary-fixed">{digest.title}</span>
-                    </div>
-                  ))}
+                  {week.digests
+                    .filter(d => ['repo', 'github'].includes(d.type))
+                    .slice(0, 5)
+                    .map((digest, i) => (
+                      <a
+                        key={digest.id || i}
+                        href={digest.notion_page_id ? `https://notion.so/${digest.notion_page_id}` : '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block mb-3 text-on-surface hover:text-tertiary transition-colors group flex items-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-tertiary text-sm">star</span>
+                        <span className="font-medium underline decoration-dashed decoration-tertiary/50 underline-offset-2">
+                          {digest.title}
+                        </span>
+                      </a>
+                    ))}
                   {week.digests.filter(d => ['repo', 'github'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No trending repos this week... 📦

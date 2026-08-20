@@ -30,11 +30,21 @@ export default function DashboardPage() {
         if (!json.success) throw new Error(json.error || 'Failed to fetch')
 
         const allDigests: DigestItem[] = json.data || []
+
+        // Find the latest date across all digests
+        const dates = allDigests.map(d => d.date).filter(Boolean)
+        const latestDate = dates.length > 0 ? dates.reduce((a, b) => a > b ? a : b) : null
+
+        // Filter to only the latest week
+        const latestDigests = latestDate
+          ? allDigests.filter(d => d.date === latestDate)
+          : []
+
         // Map types: 'ai', 'technology' -> AI column | 'repo', 'github' -> Repo column
         const aiTypes = ['ai', 'technology']
         const repoTypes = ['repo', 'github']
-        setAiDigests(allDigests.filter(d => aiTypes.includes(d.type)))
-        setRepoDigests(allDigests.filter(d => repoTypes.includes(d.type)))
+        setAiDigests(latestDigests.filter(d => aiTypes.includes(d.type)))
+        setRepoDigests(latestDigests.filter(d => repoTypes.includes(d.type)))
       } catch (err: any) {
         setError(err.message)
       } finally {
@@ -136,6 +146,9 @@ export default function DashboardPage() {
               {aiDigests.length > 0 ? (
                 aiDigests.map((topic, index) => {
                   const { summary1, summary2 } = getSummaries(topic.content)
+                  const notionUrl = topic.notion_page_id
+                    ? `https://notion.so/${topic.notion_page_id}`
+                    : undefined
                   return (
                     <ContentCard
                       key={topic.id || index}
@@ -145,6 +158,7 @@ export default function DashboardPage() {
                       btnText="Read More"
                       btnClass="bg-primary-container text-on-primary-container border-primary-container"
                       iconName="article"
+                      href={notionUrl}
                     />
                   )
                 })
@@ -176,6 +190,9 @@ export default function DashboardPage() {
               {repoDigests.length > 0 ? (
                 repoDigests.map((topic, index) => {
                   const { summary1, summary2 } = getSummaries(topic.content)
+                  const repoUrl = topic.notion_page_id
+                    ? `https://notion.so/${topic.notion_page_id}`
+                    : undefined
                   return (
                     <ContentCard
                       key={topic.id || index}
@@ -185,6 +202,7 @@ export default function DashboardPage() {
                       btnText="View on GitHub"
                       btnClass="bg-tertiary-container text-tertiary border-tertiary-container"
                       iconName="code"
+                      href={repoUrl}
                     />
                   )
                 })
