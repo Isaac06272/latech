@@ -36,6 +36,14 @@ function parseStyle(styleString: string): React.CSSProperties {
   return styles
 }
 
+// Helper to create 2-sentence summary from content
+function getSummary(content: string): string {
+  const sentences = content.split('. ').filter(Boolean)
+  if (sentences.length === 0) return content
+  if (sentences.length === 1) return sentences[0] + '.'
+  return sentences[0] + '. ' + sentences[1] + '.'
+}
+
 // Group digests by week (Monday-Sunday)
 function groupByWeek(digests: DigestItem[]): WeekData[] {
   const weekMap = new Map<string, DigestItem[]>()
@@ -225,7 +233,7 @@ export default function HistoryPage() {
                   </h3>
                   {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).map((digest, i) => (
                     <div key={digest.id || i} className="mb-4">
-                      <p className="text-on-surface mb-2">{digest.content}</p>
+                      <p className="text-on-surface mb-2">{getSummary(digest.content)}</p>
                       {digest.notion_page_id && (
                         <a href={`https://notion.so/${digest.notion_page_id}`} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-surface-tint text-sm">
                           View in Notion →
