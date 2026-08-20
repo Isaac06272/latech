@@ -11,7 +11,13 @@ interface DigestItem {
   title: string;
   content: string;
   notion_page_id: string | null;
-  source_data: unknown;
+  source_data: {
+    url?: string;
+    html_url?: string;
+    link?: string;
+    source_url?: string;
+    [key: string]: unknown;
+  } | null;
   updated_at: string;
 }
 
@@ -42,6 +48,13 @@ function getSummary(content: string): string {
   if (sentences.length === 0) return content
   if (sentences.length === 1) return sentences[0] + '.'
   return sentences[0] + '. ' + sentences[1] + '.'
+}
+
+// Extract source URL from source_data
+function getSourceUrl(item: DigestItem): string | undefined {
+  const sd = item.source_data
+  if (!sd) return undefined
+  return sd.url || sd.html_url || sd.link || sd.source_url || undefined
 }
 
 // Group digests by week (Monday-Sunday)
@@ -234,20 +247,23 @@ export default function HistoryPage() {
                   {week.digests
                     .filter(d => ['ai', 'technology'].includes(d.type))
                     .slice(0, 5)
-                    .map((digest, i) => (
-                      <a
-                        key={digest.id || i}
-                        href={digest.notion_page_id ? `https://notion.so/${digest.notion_page_id}` : '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block mb-3 text-on-surface hover:text-primary transition-colors group flex items-center gap-2"
-                      >
-                        <span className="material-symbols-outlined text-primary text-sm">article</span>
-                        <span className="font-medium underline decoration-wavy decoration-primary/50 underline-offset-2">
-                          {digest.title}
-                        </span>
-                      </a>
-                    ))}
+                    .map((digest, i) => {
+                      const sourceUrl = getSourceUrl(digest)
+                      return (
+                        <a
+                          key={digest.id || i}
+                          href={sourceUrl || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block mb-3 text-on-surface hover:text-primary transition-colors group flex items-center gap-2"
+                        >
+                          <span className="material-symbols-outlined text-primary text-sm">article</span>
+                          <span className="font-medium underline decoration-wavy decoration-primary/50 underline-offset-2">
+                            {digest.title}
+                          </span>
+                        </a>
+                      )
+                    })}
                   {week.digests.filter(d => ['ai', 'technology'].includes(d.type)).length === 0 && (
                     <p className="text-on-surface-variant/50 font-handwritten text-xl italic">
                       No AI insights this week... 🤖
@@ -263,12 +279,14 @@ export default function HistoryPage() {
                   {week.digests
                     .filter(d => ['repo', 'github'].includes(d.type))
                     .slice(0, 5)
-                    .map((digest, i) => (
-                      <a
-                        key={digest.id || i}
-                        href={digest.notion_page_id ? `https://notion.so/${digest.notion_page_id}` : '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    .map((digest, i) => {
+                      const sourceUrl = getSourceUrl(digest)
+                      return (
+                        <a
+                          key={digest.id || i}
+                          href={sourceUrl || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         className="block mb-3 text-on-surface hover:text-tertiary transition-colors group flex items-center gap-2"
                       >
                         <span className="material-symbols-outlined text-tertiary text-sm">star</span>

@@ -12,7 +12,13 @@ interface DigestItem {
   title: string;
   content: string;
   notion_page_id: string | null;
-  source_data: unknown;
+  source_data: {
+    url?: string;
+    html_url?: string;
+    link?: string;
+    source_url?: string;
+    [key: string]: unknown;
+  } | null;
   updated_at: string;
 }
 
@@ -61,6 +67,14 @@ export default function DashboardPage() {
       summary1: sentences[0] ? sentences[0] + '.' : 'Initial tests show promising results.',
       summary2: sentences[1] ? sentences[1] + '.' : 'Further validation is underway.'
     }
+  }
+
+  // Extract source URL from source_data
+  const getSourceUrl = (item: DigestItem): string | undefined => {
+    const sd = item.source_data
+    if (!sd) return undefined
+    // Try common URL fields
+    return sd.url || sd.html_url || sd.link || sd.source_url || undefined
   }
 
   if (loading) {
@@ -146,19 +160,17 @@ export default function DashboardPage() {
               {aiDigests.length > 0 ? (
                 aiDigests.map((topic, index) => {
                   const { summary1, summary2 } = getSummaries(topic.content)
-                  const notionUrl = topic.notion_page_id
-                    ? `https://notion.so/${topic.notion_page_id}`
-                    : undefined
+                  const sourceUrl = getSourceUrl(topic)
                   return (
                     <ContentCard
                       key={topic.id || index}
                       title={topic.title}
                       summary1={summary1}
                       summary2={summary2}
-                      btnText="Read More"
+                      btnText="Read Article"
                       btnClass="bg-primary-container text-on-primary-container border-primary-container"
                       iconName="article"
-                      href={notionUrl}
+                      href={sourceUrl}
                     />
                   )
                 })
@@ -190,9 +202,7 @@ export default function DashboardPage() {
               {repoDigests.length > 0 ? (
                 repoDigests.map((topic, index) => {
                   const { summary1, summary2 } = getSummaries(topic.content)
-                  const repoUrl = topic.notion_page_id
-                    ? `https://notion.so/${topic.notion_page_id}`
-                    : undefined
+                  const sourceUrl = getSourceUrl(topic)
                   return (
                     <ContentCard
                       key={topic.id || index}
@@ -202,7 +212,7 @@ export default function DashboardPage() {
                       btnText="View on GitHub"
                       btnClass="bg-tertiary-container text-tertiary border-tertiary-container"
                       iconName="code"
-                      href={repoUrl}
+                      href={sourceUrl}
                     />
                   )
                 })
