@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 
 export default function HeroSection() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [refreshWeek, setRefreshWeek] = useState('')
 
   useEffect(() => {
     // Calculate time until next Monday 10 AM Philippine Time (UTC+8)
@@ -20,6 +21,10 @@ export default function HeroSection() {
       nextMonday.setHours(10, 0, 0, 0)
 
       const diff = nextMonday.getTime() - phTime.getTime()
+
+      // Format the Monday date for display (e.g., "January 15")
+      const weekLabel = nextMonday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+      setRefreshWeek(weekLabel)
 
       if (diff <= 0) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 }
@@ -58,7 +63,7 @@ export default function HeroSection() {
         Good morning, Isaac! <span className="inline-block animate-bounce">👋</span>
       </h1>
       <p className="font-headline-md text-body-lg text-on-surface-variant ml-12">
-        Here is your intelligence digest for the week of October 23rd.
+        Here is your intelligence digest for the week of {refreshWeek || 'loading...'}.
       </p>
       <div className="ml-12 mt-4 flex flex-col gap-2">
         <div className="flex gap-4 items-center">
