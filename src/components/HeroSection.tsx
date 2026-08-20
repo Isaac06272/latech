@@ -76,7 +76,7 @@ export default function HeroSection() {
         <span className="material-symbols-outlined text-4xl text-yellow-500 rotate-12" style={{ fontVariationSettings: "'FILL' 1" }}>
           push_pin
         </span>
-        Good morning, Isaac! <span className="inline-block animate-bounce">👋</span>
+        Good day, Isaac! <span className="inline-block animate-bounce">👋</span>
       </h1>
       <p className="font-headline-md text-body-lg text-on-surface-variant ml-12">
         Here is your intelligence digest for the week of {refreshWeek || 'loading...'}.
